@@ -1,13 +1,9 @@
 jQuery(function ($) {
     window.portfolio = {
-        $form: null,
-        $submitForm: null,
         submitForm: function(){
             var self = window.portfolio;
             $('#SubmitForm').on('click', function(e){
               e.preventDefault();
-                //var data = $('#ContactForm').serialize();
-
                 //form validation
                 var name = $('input[name=fullname]');
                 var email = $('input[name=email]');
@@ -15,16 +11,16 @@ jQuery(function ($) {
                 var message = $('textarea[name=message]');
                 var formValid = self.validateForm(name, email, subject, message);
 
-                if(formValid === false){
+                if(!formValid){
                   return;
                  }
 
-                  var formData = {
-                        'name' : name.val(),
-                        'email': email.val(),
-                        'subject' : subject.val(),
-                        'message' : message.val()
-                    };
+                var formData = {
+                    'name' : name.val(),
+                    'email': email.val(),
+                    'subject' : subject.val(),
+                    'message' : message.val()
+                  };
 
                 $.ajax({
                     url: "https://formspree.io/basnataliia@gmail.com",
@@ -46,17 +42,17 @@ jQuery(function ($) {
         //form validation
         validateForm: function(name, email, subject, msg){
             var emailvalue = email.val();
-            var inputields = [name, email, subject, msg];
+            var inputFields = [name, email, subject, msg];
             var valid = false;
-            inputields.forEach( function(input) {
-                 if(input.val() == ""){
-                     valid =  false;
-                     input.addClass('not-valid');
-                 }
-                else{
-                    valid = true;
+            inputFields.forEach( function(input) {
+               if(!input.val()) {
+                  valid =  false;
+                  input.addClass('not-valid');
                 }
-            } );
+                else {
+                  valid = true;
+                }
+            });
 
             //check email againsr regular expression
             function validateEmail(email) {
@@ -65,25 +61,21 @@ jQuery(function ($) {
             }
 
             var testemail = validateEmail(emailvalue)
-            if (testemail == false) {
+            if (!testemail) {
                 valid = false;
                 email.addClass('not-valid');
-                console.error('email is not valid');
             }
-             return valid;
-
+            return valid;
         },
 
         //remove red border from input fields
         clearValidation: function(){
             $('#ContactForm input').on('keyup', function(){
-                 $(this).removeClass('not-valid');
+                $(this).removeClass('not-valid');
             });
-
             $('#ContactForm textarea').on('keyup', function(){
                  $(this).removeClass('not-valid');
             });
-
         },
 
         smoothScroll: function(){
@@ -103,7 +95,7 @@ jQuery(function ($) {
 
         init: function(){
             var self = window.portfolio;
-            portfolio.submitForm();
+            self.submitForm();
             self.clearValidation();
             self.smoothScroll();
         }
